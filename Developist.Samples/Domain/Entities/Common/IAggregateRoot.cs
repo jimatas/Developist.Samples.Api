@@ -15,7 +15,7 @@ namespace Developist.Samples.Domain.Entities.Common
         IReadOnlyCollection<IEvent> Events { get; }
 
         /// <summary>
-        /// Add a new domain event to the collection of events.
+        /// Adds a new domain event to the collection of events.
         /// </summary>
         /// <param name="event"></param>
         void AddEvent(IEvent @event);

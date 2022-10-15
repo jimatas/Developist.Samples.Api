@@ -1,8 +1,6 @@
 ﻿using Developist.Core.Cqrs.Events;
 using Developist.Core.Persistence.Entities;
 
-using System.Text.Json.Serialization;
-
 namespace Developist.Samples.Domain.Entities.Common
 {
     /// <summary>
@@ -17,7 +15,6 @@ namespace Developist.Samples.Domain.Entities.Common
         protected AggregateRootBase() { }
         protected AggregateRootBase(TIdentifier id) : base(id) { }
 
-        [JsonIgnore]
         public IReadOnlyCollection<IEvent> Events => events.AsReadOnly();
         public void AddEvent(IEvent @event) => events.Add(@event);
         public void ClearEvents() => events.Clear();
