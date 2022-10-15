@@ -14,6 +14,7 @@ namespace Developist.Samples.Api.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status200OK), ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class UsersController : ControllerBase
     {
         private readonly DispatcherDelegate<GetAllUsers, IReadOnlyList<User>> getAllUsersAsync;
@@ -27,20 +28,22 @@ namespace Developist.Samples.Api.Controllers
             assignRoleToUserAsync = dispatcher.CreateDelegate<AssignRoleToUser>();
         }
 
-        [HttpGet]
+        [HttpGet(Name = nameof(GetAllUsers))]
         public async Task<IEnumerable<UserModel>> GetAsync([FromQuery] GetAllUsers query, CancellationToken cancellationToken)
         {
             return (await getAllUsersAsync(query, cancellationToken)).Select(user => new UserModel(user));
         }
 
-        [HttpGet("{userName}")]
+        [HttpGet("{userName}", Name = nameof(GetUserByUserName))]
+        [ProducesResponseType(StatusCodes.Status204NoContent), ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<UserModel?> GetAsync([FromRoute] GetUserByUserName query, CancellationToken cancellationToken)
         {
             var user = await getUserByUniqueNameAsync(query, cancellationToken);
             return user is not null ? new UserModel(user) : null;
         }
 
-        [HttpPost("{userName}/roles/{roleName}")]
+        [HttpPost("{userName}/roles/{roleName}", Name = nameof(AssignRoleToUser))]
+        [ProducesResponseType(StatusCodes.Status404NotFound), ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task PostAsync([FromRoute] AssignRoleToUser command, CancellationToken cancellationToken)
         {
             await assignRoleToUserAsync(command, cancellationToken);
