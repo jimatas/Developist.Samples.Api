@@ -31,15 +31,14 @@ namespace Developist.Samples.Api.Controllers
         [HttpGet(Name = nameof(GetAllUsers))]
         public async Task<IEnumerable<UserModel>> GetAsync([FromQuery] GetAllUsers query, CancellationToken cancellationToken)
         {
-            return (await getAllUsersAsync(query, cancellationToken)).Select(user => new UserModel(user));
+            return (await getAllUsersAsync(query, cancellationToken)).Select(UserModel.FromUser);
         }
 
         [HttpGet("{userName}", Name = nameof(GetUserByUserName))]
         [ProducesResponseType(StatusCodes.Status204NoContent), ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<UserModel?> GetAsync([FromRoute] GetUserByUserName query, CancellationToken cancellationToken)
         {
-            var user = await getUserByUniqueNameAsync(query, cancellationToken);
-            return user is not null ? new UserModel(user) : null;
+            return UserModel.FromUserOrNull(await getUserByUniqueNameAsync(query, cancellationToken));
         }
 
         [HttpPost("{userName}/roles/{roleName}", Name = nameof(AssignRoleToUser))]
