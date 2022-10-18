@@ -22,13 +22,12 @@ void ConfigureServices(IServiceCollection services)
     services.AddOptions<ApiExceptionFilterOptions>().Configure(options =>
     {
         var defaultOnSerializingAction = options.OnSerializingProblemDetails;
-        options.OnSerializingProblemDetails = (prob, ex, ctx) =>
+        options.OnSerializingProblemDetails = (problem, exception, context) =>
         {
-            defaultOnSerializingAction(prob, ex, ctx);
-
-            if (ex.InnerException is { } innerException)
+            defaultOnSerializingAction(problem, exception, context);
+            if (exception.InnerException is { } innerException)
             {
-                prob.Extensions["innerExceptionMessage"] = innerException.Message;
+                problem.Extensions["innerExceptionMessage"] = innerException.Message;
             }
         };
     });
@@ -94,7 +93,7 @@ void ConfigureApplication(IApplicationBuilder app, IHostEnvironment env)
         app.UseSwagger();
         app.UseSwaggerUI(options =>
         {
-            options.SwaggerEndpoint($"v1/swagger.json", "Sample Web API v1");
+            options.SwaggerEndpoint("v1/swagger.json", "Sample Web API v1");
         });
     }
 
