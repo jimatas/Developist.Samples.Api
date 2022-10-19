@@ -18,13 +18,13 @@ namespace Developist.Samples.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly DispatcherDelegate<GetAllUsers, IReadOnlyList<User>> getAllUsersAsync;
-        private readonly DispatcherDelegate<GetUserByUserName, User?> getUserByUserNameAsync;
+        private readonly DispatcherDelegate<GetUsersByName, IReadOnlyList<User>> getUsersByNameAsync;
         private readonly DispatcherDelegate<AssignRoleToUser> assignRoleToUserAsync;
 
         public UsersController(ICompositeDispatcher dispatcher)
         {
             getAllUsersAsync = dispatcher.CreateDelegate<GetAllUsers, IReadOnlyList<User>>();
-            getUserByUserNameAsync = dispatcher.CreateDelegate<GetUserByUserName, User?>();
+            getUsersByNameAsync = dispatcher.CreateDelegate<GetUsersByName, IReadOnlyList<User>>();
             assignRoleToUserAsync = dispatcher.CreateDelegate<AssignRoleToUser>();
         }
 
@@ -34,11 +34,11 @@ namespace Developist.Samples.Api.Controllers
             return (await getAllUsersAsync(query, cancellationToken)).Select(UserModel.FromUser);
         }
 
-        [HttpGet("{userName}", Name = nameof(GetUserByUserName))]
+        [HttpGet("{name}", Name = nameof(GetUsersByName))]
         [ProducesResponseType(StatusCodes.Status204NoContent), ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<UserModel?> GetAsync([FromRoute] GetUserByUserName query, CancellationToken cancellationToken)
+        public async Task<IEnumerable<UserModel>> GetAsync([FromRoute] GetUsersByName query, CancellationToken cancellationToken)
         {
-            return UserModel.FromUserOrNull(await getUserByUserNameAsync(query, cancellationToken));
+            return (await getUsersByNameAsync(query, cancellationToken)).Select(UserModel.FromUser);
         }
 
         [HttpPost("{userName}/roles/{roleName}", Name = nameof(AssignRoleToUser))]

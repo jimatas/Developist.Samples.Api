@@ -73,7 +73,7 @@ void ConfigureServices(IServiceCollection services)
             await provider.GetRequiredService<ICommandDispatcher>().DispatchAsync(new SeedUserData(), token);
             return await next();
         })
-        .AddQueryInterceptor<GetUserByUserName, User?>(async (query, next, provider, token) =>
+        .AddQueryInterceptor<GetUsersByName, IReadOnlyList<User>>(async (query, next, provider, token) =>
         {
             await provider.GetRequiredService<ICommandDispatcher>().DispatchAsync(new SeedUserData(), token);
             return await next();

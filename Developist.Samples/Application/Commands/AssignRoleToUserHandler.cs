@@ -12,9 +12,12 @@ namespace Developist.Samples.Application.Commands
 
         public async Task HandleAsync(AssignRoleToUser command, CancellationToken cancellationToken)
         {
-            User user = (await unitOfWork.Repository<User>().FindAsync(
-                new UserByUserNameFilter(command.UserName, isCaseSensitive: false),
-                cancellationToken)).SingleOrDefault() ?? throw new NotFoundException($"User '{command.UserName}' was not found.");
+            IReadOnlyList<User> users = await unitOfWork.Repository<User>().FindAsync(
+                new UserByNameFilter(command.UserName, isCaseSensitive: false),
+                cancellationToken);
+
+            User user = users.SingleOrDefault(u => u.UserName.Equals(command.UserName, StringComparison.OrdinalIgnoreCase))
+                ?? throw new NotFoundException($"User '{command.UserName}' was not found.");
 
             var success = user.AssignRole(command.RoleName);
             if (!success)

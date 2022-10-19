@@ -7,12 +7,12 @@ namespace Developist.Samples.Application.Queries
 {
     public class GetAllUsersHandler : IQueryHandler<GetAllUsers, IReadOnlyList<User>>
     {
-        private readonly IReadOnlyRepository<User> users;
-        public GetAllUsersHandler(IUnitOfWork unitOfWork) => users = unitOfWork.Repository<User>();
+        private readonly IReadOnlyRepository<User> userRepository;
+        public GetAllUsersHandler(IUnitOfWork unitOfWork) => userRepository = unitOfWork.Repository<User>();
 
         public async Task<IReadOnlyList<User>> HandleAsync(GetAllUsers query, CancellationToken cancellationToken)
         {
-            return await users.AllAsync(paginator
+            return await userRepository.AllAsync(paginator
                 => paginator.StartingAtPage(query.PageNumber)
                     .WithPageSizeOf(query.PageSize)
                     .SortedBy(query.SortBy), cancellationToken);

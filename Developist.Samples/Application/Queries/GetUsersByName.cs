@@ -5,13 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Developist.Samples.Application.Queries
 {
-    public record GetUserByUserName(string UserName) : IQuery<User?>
+    public record GetUsersByName(string Name) : IQuery<IReadOnlyList<User>>
     {
         [FromQuery]
         public bool IsCaseSensitive { get; set; } = true;
 
         /// <summary>
-        /// Indicates whether a NotFoundException should be thrown rather than a default (null) value returned in case of a no match.
+        /// Match on whole name or partial (substring).
+        /// </summary>
+        [FromQuery]
+        public bool IsSubstringMatch { get; set; } = false;
+
+        /// <summary>
+        /// Indicates whether a NotFoundException should be thrown rather than a default (null or empty) value returned in case of a no match.
         /// </summary>
         [FromQuery(Name = "error404IfNotFound")]
         public bool ThrowNotFoundException { get; set; }
