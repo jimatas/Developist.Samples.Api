@@ -21,7 +21,7 @@ void ConfigureServices(IServiceCollection services)
         };
     });
     services.AddScoped<ApiExceptionFilterAttribute>();
-    
+
     services.AddControllers(options =>
     {
         options.Filters.Add<ApiExceptionFilterAttribute>();
