@@ -10,7 +10,7 @@
     <PackageReference Include="Developist.Core.Api.Exceptions" Version="1.1.0" />
     <PackageReference Include="Developist.Core.Cqrs" Version="9.0.0" />
     <PackageReference Include="Developist.Core.Persistence" Version="5.0.1" />
-    <PackageReference Include="Developist.Core.Persistence.Extensions" Version="2.0.1" />
+    <PackageReference Include="Developist.Core.Persistence.Extensions" Version="2.0.2" />
   </ItemGroup>
     
 </Project>

@@ -37,8 +37,8 @@ public class UsersController : ControllerBase
 
     [HttpPost("{userName}/roles/{roleName}", Name = nameof(AssignRoleToUser))]
     [ProducesResponseType(StatusCodes.Status404NotFound), ProducesResponseType(StatusCodes.Status409Conflict)]
-    public Task PostAsync([FromRoute] AssignRoleToUser command, CancellationToken cancellationToken)
+    public async Task PostAsync([FromRoute] AssignRoleToUser command, CancellationToken cancellationToken)
     {
-        return _commandDispatcher.DispatchAsync(command, cancellationToken);
+        await _commandDispatcher.DispatchAsync(command, cancellationToken);
     }
 }

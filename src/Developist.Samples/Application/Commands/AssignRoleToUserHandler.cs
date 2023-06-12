@@ -16,12 +16,10 @@ public class AssignRoleToUserHandler : ICommandHandler<AssignRoleToUser>
 
     public async Task HandleAsync(AssignRoleToUser command, CancellationToken cancellationToken)
     {
-        IReadOnlyList<User> filteredUsers = await _uow.Repository<User>().ListAsync(
-            new UserByNameFilter(command.UserName, isCaseSensitive: true),
-            new SortingPaginator<User>(pageNumber: 1, pageSize: 1),
-            cancellationToken);
-
-        var user = filteredUsers.SingleOrDefault(u => u.UserName.Equals(command.UserName, StringComparison.OrdinalIgnoreCase))
+        var user = await _uow.Repository<User>()
+            .SingleOrDefaultAsync(
+                predicate: user => user.UserName.Equals(command.UserName, StringComparison.OrdinalIgnoreCase),
+                cancellationToken)
             ?? throw new NotFoundException($"User '{command.UserName}' was not found.");
 
         var success = user.AssignRole(command.RoleName);
