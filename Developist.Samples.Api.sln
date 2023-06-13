@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Developist.Samples.Api", "Developist.Samples.Api\Developist.Samples.Api.csproj", "{502DF471-2332-4E8A-94D7-F00EABF4ADF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Developist.Samples.Api", "src\Developist.Samples.Api\Developist.Samples.Api.csproj", "{502DF471-2332-4E8A-94D7-F00EABF4ADF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Developist.Samples", "Developist.Samples\Developist.Samples.csproj", "{5B2EB45E-6E38-4DD1-A279-BD11217F6B50}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Developist.Samples", "src\Developist.Samples\Developist.Samples.csproj", "{5B2EB45E-6E38-4DD1-A279-BD11217F6B50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
